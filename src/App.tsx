@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { COLORS, HEADER_HEIGHT } from './styles';
+import { BREAKPOINTS, COLORS, HEADER_HEIGHT } from './styles';
 
 import TransactionView from './app/TransactionView';
 import Header from './Header';
@@ -15,10 +15,11 @@ const Background = styled.div`
 `;
 
 const AppContainer = styled.div`
-  background: ${COLORS.white}
+  background: ${COLORS.white};
+  box-shadow: 0px 4px 20px 15px rgba(0,0,0,0.1);
   width: 100%;
   margin-top: ${HEADER_HEIGHT};
-  max-width: 1024px;
+  max-width: ${BREAKPOINTS.desktop};
   padding: 2rem;
 `;
 

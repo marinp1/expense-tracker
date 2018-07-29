@@ -13,9 +13,9 @@ export const COLORS = {
 /* tslint:disable:object-literal-sort-keys  */
 export const BREAKPOINTS = {
   mobile: '480px',
-  mobileMax: '767px',
   tablet: '768px',
-  desktop: '1024px',
+  tabletMax: '1279px',
+  desktop: '1280px',
 }
 
 export const HEADER_HEIGHT = '3rem';

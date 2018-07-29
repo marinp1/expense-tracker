@@ -15,6 +15,8 @@ export interface Category {
 export interface Transaction {
   uuid: string;
   type: TRANSACTION_TYPE;
+  bankName: string;
+  accountName: string;
   datetime: Moment;
   stakeholder: string;
   category: Category;
