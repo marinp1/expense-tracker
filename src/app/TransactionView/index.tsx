@@ -28,7 +28,6 @@ const TransactionContainer = styled.div`
   flex-wrap: wrap;
   margin-top: 0.5rem;
   margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
   @media (min-width: ${BREAKPOINTS.tablet}) and (max-width: ${BREAKPOINTS.tabletMax}) {
     >div:nth-child(2n + 2) {
       margin-left: 0.5rem;
@@ -43,11 +42,21 @@ const TransactionContainer = styled.div`
       margin-left: 1rem;
     }
   }
-  border-bottom: 1px solid ${COLORS.lightGray};
+`;
+
+const MonthContainer = styled.div`
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1rem;
+  border-top: 1px solid ${COLORS.lightGray};
+  span {
+    margin-right: 0.3rem;
+  }
 `;
 
 const MonthTitle = styled.h3`
-  margin-top: 1rem;
   font-weight: light;
 `;
 
@@ -56,6 +65,18 @@ const DayTitle = styled.p`
   margin-top: 0.5rem;
   font-weight: light;
 `;
+
+const Title = styled.h1`
+  color: ${COLORS.softBlack};
+  margin-bottom: 0.5rem;
+`;
+
+const Description = styled.p`
+  color: ${COLORS.darkGray};
+  font-size: 90%;
+  margin-bottom: 1.5rem;
+`;
+
 
 enum GROUPING_STYLE {
   BY_DATE = 'BY_DATE',
@@ -85,6 +106,29 @@ function groupTransactions(transactions: Transaction[], groupingStyle: GROUPING_
   return returnable;
 }
 
+function amountToReadable(amount: number): string {
+  return (amount / 100).toFixed(2) + ' €';
+}
+
+function getMonthCalculations(transactions: Transaction[]) {
+  const expenses = transactions.filter(t => t.amount < 0).map(t => t.amount).reduce((a: number, b: number) => a + b, 0);
+  const income = transactions.filter(t => t.amount > 0).map(t => t.amount).reduce((a: number, b: number) => a + b, 0);
+  const difference = income + expenses;
+  return {
+    income: amountToReadable(income),
+    expenses: amountToReadable(expenses),
+    difference: amountToReadable(difference),
+    differenceValue: difference,
+  }
+}
+
+const ColoredIconText: React.SFC<{icon: string, color: string, content: string}> = ({icon, color, content}) => (
+  <React.Fragment>
+      <span className={icon} style={{ marginLeft: '0.5rem', color }}/>
+      <span style={{ color }}>{content}</span>
+  </React.Fragment>
+);
+
 export const TransactionViewComponent: React.SFC<TransactionViewProps> = (props) => {
 
   function addNewTransaction() {
@@ -108,7 +152,7 @@ export const TransactionViewComponent: React.SFC<TransactionViewProps> = (props)
         icon: 'fa-stroopwafel',
       },
       message: 'Kauppareissu',
-      amount: 100,
+      amount: 2225,
     }
     props.addTransaction(tr);
   }
@@ -119,14 +163,34 @@ export const TransactionViewComponent: React.SFC<TransactionViewProps> = (props)
     <React.Fragment>
       <button onClick={addNewTransaction}>New transaction</button>
       <Container>
+        <Title>Transactions</Title>
+        <Description>
+          Displaying {props.transactions.length} / {props.transactions.length} transactions
+        </Description>
         {groupedByMonth.map((trs) => {
           let monthTitle = trs[0].formattedByMonth;
+
           if (trs[0] !== groupedByMonth[0][0] && trs[0].datetime.month() !== 1) {
             monthTitle = monthTitle.split(' ')[1];
           }
+
+          const calculations = getMonthCalculations(trs);
+          const diffColor = calculations.differenceValue > 0 ? COLORS.lightBlue : COLORS.red;
+
           return (
             <React.Fragment key={monthTitle}>
-              <MonthTitle>{monthTitle}</MonthTitle>
+              <MonthContainer>
+                <MonthTitle>{monthTitle}</MonthTitle>
+                <div>
+                  <p>
+                    <ColoredIconText icon="fas fa-exchange-alt" color={diffColor} content={String(calculations.difference)}/>
+                    (
+                      <ColoredIconText icon="fas fa-arrow-alt-circle-up" color={COLORS.lightBlue} content={String(calculations.income)}/>
+                      <ColoredIconText icon="fas fa-arrow-alt-circle-down" color={COLORS.red} content={String(calculations.expenses)}/>
+                    )
+                  </p>
+                </div>
+              </MonthContainer>
               <React.Fragment>
                 {groupTransactions(trs, GROUPING_STYLE.BY_DATE).map((trs2) => {
                   const dayTitle = trs2[0].formattedByDay;

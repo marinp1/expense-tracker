@@ -6,7 +6,8 @@ import { Transaction } from './TransactionViewTypes';
 
 /* tslint:disable:interface-name object-literal-sort-keys  */
 const Container = styled.div`
-  background: ${COLORS.white};
+  background: ${COLORS.softWhite};
+  color: ${COLORS.softBlack};
   box-sizing: border-box;
   box-shadow: 0px 2px 2px 2px rgba(0,0,0,0.05);
   display: flex;
@@ -14,7 +15,6 @@ const Container = styled.div`
   position: relative;
   padding: 1rem;
   padding-left: 1.5rem;
-  border: 1px solid ${COLORS.lightGray};
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
   flex-grow: 1;
@@ -88,6 +88,10 @@ const MessageContainer = styled.p`
   margin-left: 0.5rem;
 `;
 
+function amountToReadable(amount: number): string {
+  return (amount / 100).toFixed(2) + ' €';
+}
+
 export const TransactionComponent: React.SFC<Transaction> = (props) => {
   return (
     <Container>
@@ -97,7 +101,7 @@ export const TransactionComponent: React.SFC<Transaction> = (props) => {
             <AccountName>{props.accountName}</AccountName>
             <LighterText>{props.bankName}</LighterText>
           </div>
-          <BoldText>{props.amount},00 €</BoldText>
+          <BoldText>{amountToReadable(props.amount)}</BoldText>
         </UpperPane>
         <LowerPane>
           <div>
