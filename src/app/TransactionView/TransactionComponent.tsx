@@ -43,6 +43,9 @@ const UpperPane = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 0.5rem;
+  i {
+    margin-right: 0.5rem;
+  }
   p {
     display: inline-block;
   }
@@ -68,6 +71,9 @@ const LighterText = styled.p`
 const LowerPane = styled.div`
   display: flex;
   justify-content: space-between;
+  i {
+    margin-right: 0.5rem;
+  }
   p {
     display: inline-block;
   }
@@ -87,14 +93,19 @@ export const TransactionComponent: React.SFC<Transaction> = (props) => {
     <Container>
         <UpperPane>
           <div>
+            <i className="far fa-credit-card"/>
             <AccountName>{props.accountName}</AccountName>
             <LighterText>{props.bankName}</LighterText>
           </div>
-          <BoldText>{props.amount}</BoldText>
+          <BoldText>{props.amount},00 €</BoldText>
         </UpperPane>
         <LowerPane>
-          <NormalText>{props.stakeholder}</NormalText>
           <div>
+            <i className="fas fa-store-alt"/>
+            <NormalText>{props.stakeholder}</NormalText>
+          </div>
+          <div>
+          <i className="fas fa-tag"/>
             <CategoryContainer>{props.category.name}</CategoryContainer>
             <MessageContainer>{props.message}</MessageContainer>
           </div>

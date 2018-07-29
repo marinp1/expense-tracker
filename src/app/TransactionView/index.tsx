@@ -4,7 +4,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import * as uuid from 'uuid';
-import { BREAKPOINTS } from '../../styles';
+import { BREAKPOINTS, COLORS } from '../../styles';
 import { CombinedState } from '../Types';
 import TransactionComponent from './TransactionComponent';
 import {
@@ -27,7 +27,8 @@ const TransactionContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
   @media (min-width: ${BREAKPOINTS.tablet}) and (max-width: ${BREAKPOINTS.tabletMax}) {
     >div:nth-child(2n + 2) {
       margin-left: 0.5rem;
@@ -42,14 +43,16 @@ const TransactionContainer = styled.div`
       margin-left: 1rem;
     }
   }
+  border-bottom: 1px solid ${COLORS.lightGray};
 `;
 
-const MonthTitle = styled.p`
+const MonthTitle = styled.h3`
   margin-top: 1rem;
-  font-weight: bold;
+  font-weight: light;
 `;
 
 const DayTitle = styled.p`
+  color: ${COLORS.darkGray};
   margin-top: 0.5rem;
   font-weight: light;
 `;
@@ -64,7 +67,7 @@ function groupTransactions(transactions: Transaction[], groupingStyle: GROUPING_
   
   const dateMapped = transactions.map(t => ({
     ...t,
-    formattedByMonth: t.datetime.format('YYYY [>] MMMM'),
+    formattedByMonth: t.datetime.format('YYYY MMMM'),
     formattedByDay: t.datetime.format('dddd Do'),
   }));
 
@@ -110,12 +113,17 @@ export const TransactionViewComponent: React.SFC<TransactionViewProps> = (props)
     props.addTransaction(tr);
   }
 
+  const groupedByMonth = groupTransactions(props.transactions, GROUPING_STYLE.BY_MONTH);
+
   return (
     <React.Fragment>
       <button onClick={addNewTransaction}>New transaction</button>
       <Container>
-        {groupTransactions(props.transactions, GROUPING_STYLE.BY_MONTH).map((trs) => {
-          const monthTitle = trs[0].formattedByMonth;
+        {groupedByMonth.map((trs) => {
+          let monthTitle = trs[0].formattedByMonth;
+          if (trs[0] !== groupedByMonth[0][0] && trs[0].datetime.month() !== 1) {
+            monthTitle = monthTitle.split(' ')[1];
+          }
           return (
             <React.Fragment key={monthTitle}>
               <MonthTitle>{monthTitle}</MonthTitle>
