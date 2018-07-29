@@ -10,7 +10,8 @@ import registerServiceWorker from './registerServiceWorker';
 
 import transactionViewReducer from './app/TransactionView/transactionViewReducer';
 
-/* tslint:disable:interface-name  */
+/* tslint:disable:interface-name no-var-requires  */
+require('normalize.css');
 declare global {
   interface Window { __REDUX_DEVTOOLS_EXTENSION_COMPOSE__: any; }
 }

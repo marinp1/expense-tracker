@@ -28,15 +28,17 @@ export type ActionTypes =
   | OtherAction;
 
 export const addTransaction = (transaction: Transaction) => (dispatch: any) => {
-  dispatch({
+  const action: AddTransaction = {
     type: TypeKeys.ADD_TRANSACTION,
     transaction,
-  });
+  }
+  dispatch(action);
 }
 
 export const removeTransaction = (uuid: string) => (dispatch: any) => {
-  dispatch({
+  const action: RemoveTransaction = {
     type: TypeKeys.REMOVE_TRANSACTION,
     uuid,
-  });
+  }
+  dispatch(action);
 }
