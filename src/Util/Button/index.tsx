@@ -13,7 +13,7 @@ export enum BUTTON_THEME {
 
 interface IProps {
   theme: BUTTON_THEME;
-  children: any[];
+  children: any | any[];
 }
 
 const Button: React.SFC<IProps> = (props: IProps) => {
