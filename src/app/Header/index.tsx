@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { COLORS, HEADER_HEIGHT } from '../styles';
+import { COLORS, HEADER_HEIGHT } from '../../styles';
 
 const HeaderContainer = styled.div`
   background: ${COLORS.darkBlue};

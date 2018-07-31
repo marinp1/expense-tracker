@@ -5,8 +5,8 @@ import styled from 'styled-components';
 import { BREAKPOINTS, COLORS, HEADER_HEIGHT } from '../styles';
 import { APP_STATE } from '../Types';
 
+import Header from '../App/Header';
 import Login from '../Auth';
-import Header from '../Header';
 import PrivateRoute from '../PrivateRoute';
 import TransactionView from './TransactionView';
 
@@ -26,15 +26,23 @@ const AppContainer = styled.div`
   padding: 2rem;
 `;
 
-const App: React.SFC<{}> = () => (
-  <Background>
+const AppComponent = () => (
+  <React.Fragment>
     <Header />
     <AppContainer>
       <Switch>
         <PrivateRoute stateRequired={APP_STATE.SIGNED_IN} redirect='/login' exact={true} path='/' component={ TransactionView }/>
-        <PrivateRoute stateRequired={APP_STATE.SIGN_IN} redirect='/' path='/login' component={ Login }/>
       </Switch>
     </AppContainer>
+  </React.Fragment>
+)
+
+const App: React.SFC<{}> = () => (
+  <Background>
+    <Switch>
+      <PrivateRoute stateRequired={APP_STATE.SIGN_IN} redirect='/' path='/login' component={ Login }/>
+      <AppComponent/>
+    </Switch>
   </Background>
 );
 

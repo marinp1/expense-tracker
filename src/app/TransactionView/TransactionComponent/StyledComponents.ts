@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { BREAKPOINTS, COLORS } from '../../styles';
+import { BREAKPOINTS, COLORS } from '../../../styles';
 
 /* tslint:disable:interface-name object-literal-sort-keys  */
 export const Container = styled.div`
