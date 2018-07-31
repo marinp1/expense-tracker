@@ -2,10 +2,9 @@ import * as _ from 'lodash';
 import * as moment from 'moment';
 import * as React from 'react';
 import { connect } from 'react-redux';
-import styled from 'styled-components';
 import * as uuid from 'uuid';
-import { BREAKPOINTS, COLORS } from '../../styles';
-import { CombinedState } from '../Types';
+import { COLORS } from '../../styles';
+import { CombinedState } from '../../Types';
 import TransactionComponent from './TransactionComponent';
 import {
   addTransaction,
@@ -13,70 +12,23 @@ import {
 } from './TransactionViewActions';
 import { Transaction, TRANSACTION_TYPE } from './TransactionViewTypes';
 
+import { amountToReadable } from '../../utils';
+
+import {
+  Container,
+  DayTitle,
+  Description,
+  MonthContainer,
+  MonthTitle,
+  Title,
+  TransactionContainer,
+} from './StyledComponents';
+
 /* tslint:disable:interface-name object-literal-sort-keys  */
 interface TransactionViewProps {
   transactions: Transaction[],
   addTransaction: (transaction: Transaction) => void;
 }
-
-const Container = styled.div`
-  margin-top: 0.5rem;
-`;
-
-const TransactionContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  margin-top: 0.5rem;
-  margin-bottom: 1rem;
-  @media (min-width: ${BREAKPOINTS.tablet}) and (max-width: ${BREAKPOINTS.tabletMax}) {
-    >div:nth-child(2n + 2) {
-      margin-left: 0.5rem;
-    }
-    >div:nth-child(2n + 1) {
-      margin-right: 0.5rem;
-    }
-  }
-  @media (min-width: ${BREAKPOINTS.desktop}) {
-    >div:nth-child(3n + 2) {
-      margin-right: 1rem;
-      margin-left: 1rem;
-    }
-  }
-`;
-
-const MonthContainer = styled.div`
-  margin-top: 1rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-top: 1rem;
-  border-top: 1px solid ${COLORS.lightGray};
-  span {
-    margin-right: 0.3rem;
-  }
-`;
-
-const MonthTitle = styled.h3`
-  font-weight: light;
-`;
-
-const DayTitle = styled.p`
-  color: ${COLORS.darkGray};
-  margin-top: 0.5rem;
-  font-weight: light;
-`;
-
-const Title = styled.h1`
-  color: ${COLORS.softBlack};
-  margin-bottom: 0.5rem;
-`;
-
-const Description = styled.p`
-  color: ${COLORS.darkGray};
-  font-size: 90%;
-  margin-bottom: 1.5rem;
-`;
-
 
 enum GROUPING_STYLE {
   BY_DATE = 'BY_DATE',
@@ -104,10 +56,6 @@ function groupTransactions(transactions: Transaction[], groupingStyle: GROUPING_
   }
 
   return returnable;
-}
-
-function amountToReadable(amount: number): string {
-  return (amount / 100).toFixed(2) + ' €';
 }
 
 function getMonthCalculations(transactions: Transaction[]) {

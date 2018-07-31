@@ -8,7 +8,8 @@ import App from './App';
 import './index.css';
 import registerServiceWorker from './registerServiceWorker';
 
-import transactionViewReducer from './app/TransactionView/transactionViewReducer';
+import transactionViewReducer from './App/TransactionView/transactionViewReducer';
+import authReducer from './Auth/authReducer';
 
 /* tslint:disable:interface-name no-var-requires  */
 require('normalize.css');
@@ -17,6 +18,7 @@ declare global {
 }
 
 const combinedReducer = combineReducers({
+  auth: authReducer,
   transactionView: transactionViewReducer,
 });
 

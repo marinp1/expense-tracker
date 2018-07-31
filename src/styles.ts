@@ -18,4 +18,4 @@ export const BREAKPOINTS = {
   desktop: '1280px',
 }
 
-export const HEADER_HEIGHT = '3rem';
+export const HEADER_HEIGHT = '4rem';

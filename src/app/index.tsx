@@ -1,11 +1,14 @@
 import * as React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Switch } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { BREAKPOINTS, COLORS, HEADER_HEIGHT } from './styles';
+import { BREAKPOINTS, COLORS, HEADER_HEIGHT } from '../styles';
+import { APP_STATE } from '../Types';
 
-import TransactionView from './app/TransactionView';
-import Header from './Header';
+import Login from '../Auth';
+import Header from '../Header';
+import PrivateRoute from '../PrivateRoute';
+import TransactionView from './TransactionView';
 
 const Background = styled.div`
   background: ${COLORS.lightBlue};
@@ -28,7 +31,8 @@ const App: React.SFC<{}> = () => (
     <Header />
     <AppContainer>
       <Switch>
-        <Route path='/' component={ TransactionView }/>
+        <PrivateRoute stateRequired={APP_STATE.SIGNED_IN} redirect='/login' exact={true} path='/' component={ TransactionView }/>
+        <PrivateRoute stateRequired={APP_STATE.SIGN_IN} redirect='/' path='/login' component={ Login }/>
       </Switch>
     </AppContainer>
   </Background>
